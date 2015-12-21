@@ -1,0 +1,128 @@
+clean_data = routeAdata[(abs(routeAdata$Initial_Delay)<15 & abs(routeAdata$Wells_Delay)<15&abs(routeAdata$Jordan_Delay)<15&abs(routeAdata$IMU_Delay)<15&abs(routeAdata$Back_to_Stadium_Delay)<15),]
+
+
+
+install.packages("mvoutlier")
+library(mvoutlier)
+uni.plot(routeAdata[,c(4,5,6,7,8)])
+
+
+bus_ids = clean_data[!duplicated(clean_data$Bus_ID),2]
+
+
+
+Initial_Delay <- mean(clean_data$Initial_Delay)
+Wells_Delay <- mean(clean_data$Wells_Delay)
+Jordan_Delay <- mean(clean_data$Jordan_Delay)
+IMU_Delay <- mean(clean_data$IMU_Delay)
+Back_to_Stadium_Delay <- mean(clean_data$Back_to_Stadium_Delay)
+
+Initial_Delay <- var(clean_data$Initial_Delay)
+Wells_Delay <- var(clean_data$Wells_Delay)
+Jordan_Delay <- var(clean_data$Jordan_Delay)
+IMU_Delay <- var(clean_data$IMU_Delay)
+Back_to_Stadium_Delay <- var(clean_data$Back_to_Stadium_Delay)
+
+
+
+
+
+mean_stops = cbind(Initial_Delay,Wells_Delay,Jordan_Delay,IMU_Delay,Back_to_Stadium_Delay)
+
+stargazer::stargazer(mean_stops,title("Mean of delay at each stop"))
+
+
+clean_data[clean_data$Bus_ID = i]
+
+i='640'
+clean_data[clean_data$Bus_ID ==640,]
+
+
+tab = data.frame()  
+for(i in bus_ids) {
+  
+  Initial_Delay <- mean(clean_data[clean_data$Bus_ID==i,4])
+  Wells_Delay <- mean(clean_data[clean_data$Bus_ID==i,5])
+  Jordan_Delay <- mean(clean_data[clean_data$Bus_ID==i,6])
+  IMU_Delay <- mean(clean_data[clean_data$Bus_ID==i,7])
+  Back_to_Stadium_Delay <- mean(clean_data[clean_data$Bus_ID==i,8])
+  mean_stops = cbind(c(i),Initial_Delay,Wells_Delay,Jordan_Delay,IMU_Delay,Back_to_Stadium_Delay)
+  #print(mean_stops)
+  tab = rbind(tab,mean_stops)
+}
+stargazer::stargazer(tab,title("Mean of delay at each stop"))
+
+
+stargazer::stargazer(tab,title("Mean of delay at each stop"),summary=FALSE)
+
+
+tab = data.frame()  
+for(i in bus_ids) {
+  
+  Initial_Delay <- var(clean_data[clean_data$Bus_ID==i,4])
+  Wells_Delay <- var(clean_data[clean_data$Bus_ID==i,5])
+  Jordan_Delay <- var(clean_data[clean_data$Bus_ID==i,6])
+  IMU_Delay <- var(clean_data[clean_data$Bus_ID==i,7])
+  Back_to_Stadium_Delay <- var(clean_data[clean_data$Bus_ID==i,8])
+  mean_stops = cbind(c(i),Initial_Delay,Wells_Delay,Jordan_Delay,IMU_Delay,Back_to_Stadium_Delay)
+  #print(mean_stops)
+  tab = rbind(tab,mean_stops)
+}
+stargazer::stargazer(tab,title("Mean of delay at each stop"))
+
+
+stargazer::stargazer(tab,title("Mean of delay at each stop"),summary=FALSE)
+
+
+days = clean_data[!duplicated(clean_data$Day_of_week),12]
+
+tab = data.frame()  
+for(i in days) {
+  
+  Initial_Delay <- var(clean_data[clean_data$Day_of_week==i,4])
+  Wells_Delay <- var(clean_data[clean_data$Day_of_week==i,5])
+  Jordan_Delay <- var(clean_data[clean_data$Day_of_week==i,6])
+  IMU_Delay <- var(clean_data[clean_data$Day_of_week==i,7])
+  Back_to_Stadium_Delay <- var(clean_data[clean_data$Day_of_week==i,8])
+  mean_stops = cbind(c(i),round(Initial_Delay,3),round(Wells_Delay,3),round(Jordan_Delay,3),round(IMU_Delay,3),round(Back_to_Stadium_Delay,3))
+  #print(mean_stops)
+  tab = rbind(tab,mean_stops)
+}
+
+stargazer::stargazer(tab,title("Mean of delay at each stop"),summary=FALSE)
+
+  
+  write.table(tab, file = "tab", append = FALSE, quote = TRUE, sep = " ",
+              eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+              col.names = TRUE, qmethod = c("escape", "double"),
+              fileEncoding = "")
+
+write.csv(...)
+
+
+
+
+tab = data.frame()  
+for(i in days) {
+  
+  Initial_Delay <- mean(clean_data[clean_data$Day_of_week==i,4])
+  Wells_Delay <- mean(clean_data[clean_data$Day_of_week==i,5])
+  Jordan_Delay <- mean(clean_data[clean_data$Day_of_week==i,6])
+  IMU_Delay <- mean(clean_data[clean_data$Day_of_week==i,7])
+  Back_to_Stadium_Delay <- mean(clean_data[clean_data$Day_of_week==i,8])
+  mean_stops = cbind(c(i),round(Initial_Delay,3),round(Wells_Delay,3),round(Jordan_Delay,3),round(IMU_Delay,3),round(Back_to_Stadium_Delay,3))
+  #print(mean_stops)
+  tab = rbind(tab,mean_stops)
+}
+
+
+stargazer::stargazer(tab,title("Mean of delay at each stop"),summary=FALSE)
+
+
+
+plot(tab$V1,c(tab$V2, tab$V3))
+
+
+ 
+
+
